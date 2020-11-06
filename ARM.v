@@ -1,6 +1,10 @@
 `include "settings.h"  
 
-module ARM(input clk, input rst, output [`WORD_WIDTH-1:0] pc, output [`WORD_WIDTH-1:0] instruction);
+module ARM
+(
+  input clk, 
+  input rst
+);
 
   wire [`WORD_WIDTH-1:0] IF_stage_pc_out;
   wire [`WORD_WIDTH-1:0] IF_stage_instruction_out;
@@ -65,16 +69,16 @@ module ARM(input clk, input rst, output [`WORD_WIDTH-1:0] pc, output [`WORD_WIDT
     .instruction(EXE_stage_instruction_out)
   );
 
-  wire [`WORD_WIDTH-1:0] EXE_Reg_pc_out;
-  wire [`WORD_WIDTH-1:0] EXE_Reg_instruction_out;
+  wire [`WORD_WIDTH-1:0] EXE_reg_pc_out;
+  wire [`WORD_WIDTH-1:0] EXE_reg_instruction_out;
 
   EXE_Reg EXE_Reg_Inst(
     .clk(clk),
     .rst(rst),
     .pc_in(EXE_stage_pc_out),
     .instruction_in(EXE_stage_instruction_out),
-    .pc(EXE_Reg_pc_out),
-    .instruction(EXE_Reg_instruction_out)
+    .pc(EXE_reg_pc_out),
+    .instruction(EXE_reg_instruction_out)
   );
 
   wire [`WORD_WIDTH-1:0] MEM_stage_pc_out;
@@ -83,31 +87,34 @@ module ARM(input clk, input rst, output [`WORD_WIDTH-1:0] pc, output [`WORD_WIDT
   MEM_Stage MEM_Stage_Inst(
     .clk(clk),
     .rst(rst),
-    .pc_in(EXE_Reg_pc_out),
-    .instruction_in(EXE_Reg_instruction_out),
+    .pc_in(EXE_reg_pc_out),
+    .instruction_in(EXE_reg_instruction_out),
     .pc(MEM_stage_pc_out),
     .instruction(MEM_stage_instruction_out)
   );
 
-  wire [`WORD_WIDTH-1:0] MEM_Reg_pc_out;
-  wire [`WORD_WIDTH-1:0] MEM_Reg_instruction_out;
+  wire [`WORD_WIDTH-1:0] MEM_reg_pc_out;
+  wire [`WORD_WIDTH-1:0] MEM_reg_instruction_out;
 
   MEM_Reg MEM_Reg_Inst(
     .clk(clk),
     .rst(rst),
     .pc_in(MEM_stage_pc_out),
     .instruction_in(MEM_stage_instruction_out),
-    .pc(MEM_Reg_pc_out),
-    .instruction(MEM_Reg_instruction_out)
+    .pc(MEM_reg_pc_out),
+    .instruction(MEM_reg_instruction_out)
   );
-
+  
+  wire [`WORD_WIDTH-1:0] WB_stage_pc_out;
+  wire [`WORD_WIDTH-1:0] WB_stage_instruction_out;
+  
   WB_Stage WB_Stage_Inst(
     .clk(clk),
     .rst(rst),
-    .pc_in(MEM_Reg_pc_out),
-    .instruction_in(MEM_Reg_instruction_out),
-    .pc(pc),
-    .instruction(instruction)
+    .pc_in(MEM_reg_pc_out),
+    .instruction_in(MEM_reg_instruction_out),
+    .pc(WB_stage_pc_out),
+    .instruction(WB_stage_instruction_out)
   );
   
 endmodule
