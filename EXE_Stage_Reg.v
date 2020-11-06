@@ -2,8 +2,8 @@
 
 module EXE_Reg
 (
-    input                       clk,
-    input                       rst,
+    input                        clk,
+    input                        rst,
     input      [`WORD_WIDTH-1:0] pc_in,
     input      [`WORD_WIDTH-1:0] instruction_in,
     output reg [`WORD_WIDTH-1:0] pc,
@@ -16,6 +16,3 @@ always @(posedge clk) begin
 end
 
 endmodule
-
-
-
