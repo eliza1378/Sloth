@@ -1,16 +1,12 @@
 `include "settings.h"  
 
-module Adder
-#(
-    parameter WORD_WIDTH = `WORD_WIDTH
-)
-(
-    input  [WORD_WIDTH-1:0]  a,
-    input  [WORD_WIDTH-1:0]  b, 
-    output [WORD_WIDTH-1:0] out
+module Adder (
+    input  [`WORD_WIDTH-1:0]  a,
+    input  [`WORD_WIDTH-1:0]  b, 
+    output [`WORD_WIDTH-1:0] out
 );
   
-	reg [WORD_WIDTH-1:0] result;
+	reg [`WORD_WIDTH-1:0] result;
 	
 	always@(*) begin
 		result = a + b;     
