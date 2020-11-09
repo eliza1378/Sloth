@@ -4,7 +4,7 @@ module Register_File
 (
     input                        clk,
     input                        rst,
-    input                        write_back_en,
+    input                        WB_en,
     input  [`REG_FILE_DEPTH-1:0] src1,
     input  [`REG_FILE_DEPTH-1:0] src2,
     input  [`REG_FILE_DEPTH-1:0] WB_dest,
@@ -26,7 +26,7 @@ module Register_File
 			end
 		else 
 			begin 
-				if (write_back_en)
+				if (WB_en)
 						reg_data[WB_dest] <= WB_result;			
 			end
 	end
