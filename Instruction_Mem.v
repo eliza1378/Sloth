@@ -1,6 +1,6 @@
-`include "settings.h"  
+`include "settings.h"
 
- module Instruction_Mem 
+ module Instruction_Mem
 (
   input      [`WORD_WIDTH-1:0] addr,
   output reg [`WORD_WIDTH-1:0] instruction
@@ -8,7 +8,7 @@
 
 always @*
   case(addr)
-    32'd0: instruction = 32'b000000_00001_00010_00000_00000000000;
+    32'd0: instruction = 32'b1110_00_1_1101_0_0000_0000_000000010100;
     32'd1: instruction = 32'b000000_00011_00100_00000_00000000000;
     32'd2: instruction = 32'b000000_00101_00110_00000_00000000000;
     32'd3: instruction = 32'b000000_00111_01000_00010_00000000000;
@@ -19,5 +19,3 @@ always @*
   endcase
 
 endmodule
-
-
