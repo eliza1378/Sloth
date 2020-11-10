@@ -8,7 +8,6 @@ module ID_Stage
 	input  [`WORD_WIDTH-1:0] 						instruction_in,
 	output [`WORD_WIDTH-1:0] 						pc,
 	output [`WORD_WIDTH-1:0] 						instruction,
-	output [`REG_FILE_DEPTH-1:0] 				reg_file_src1, reg_file_src2,
 	output [`REG_FILE_DEPTH-1:0] 				reg_file_dst,
 	output [`WORD_WIDTH-1:0] 						reg_file_out1, reg_file_out2,
 	output [`SIGNED_IMM_WIDTH-1:0] 			signed_immediate,
@@ -29,6 +28,7 @@ module ID_Stage
 		update;
 
 	wire [9:0] control_unit_mux_in, control_unit_mux_out;
+	wire [`REG_FILE_DEPTH-1:0] reg_file_src1, reg_file_src2;
 
 	MUX_2_to_1 MUX_2_to_1_Reg_File (
 		.in1(instruction_in[15:12]), .in2(instruction_in[3:0]),

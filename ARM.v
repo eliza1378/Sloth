@@ -1,14 +1,14 @@
-`include "settings.h"  
+`include "settings.h"
 
 module ARM
 (
-  input clk, 
+  input clk,
   input rst
 );
 
   wire [`WORD_WIDTH-1:0] IF_stage_pc_out;
   wire [`WORD_WIDTH-1:0] IF_stage_instruction_out;
-  
+
   IF_Stage  IF_Stage_Inst (
    .clk(clk),
    .rst(rst),
@@ -33,8 +33,18 @@ module ARM
    .instruction(IF_reg_instruction_out)
   );
 
-  wire [`WORD_WIDTH-1:0] ID_stage_pc_out;
-  wire [`WORD_WIDTH-1:0] ID_stage_instruction_out;
+  wire [`WORD_WIDTH-1:0]              ID_stage_pc_out;
+  wire [`WORD_WIDTH-1:0]              ID_stage_instruction_out;
+	wire [`REG_FILE_DEPTH-1:0] 				ID_stage_reg_file_dst;
+	wire [`WORD_WIDTH-1:0] 						ID_stage_reg_file_out1, ID_stage_reg_file_out2;
+	wire [`SIGNED_IMM_WIDTH-1:0] 			ID_stage_signed_immediate;
+	wire [`SHIFTER_OPERAND_WIDTH-1:0] ID_stage_shifter_operand;
+	wire [3:0] 												ID_stage_EX_command_out;
+	wire ID_stage_mem_read_out, ID_stage_mem_write_out,
+		ID_stage_WB_en_out,
+		ID_stage_Imm_out,
+		ID_stage_B_out,
+		ID_stage_update_out;
 
   ID_Stage ID_Stage_Inst(
     .clk(clk),
@@ -42,7 +52,17 @@ module ARM
     .pc_in(IF_reg_pc_out),
     .instruction_in(IF_reg_instruction_out),
     .pc(ID_stage_pc_out),
-    .instruction(ID_stage_instruction_out)
+    .instruction(ID_stage_instruction_out),
+	  .reg_file_dst(ID_stage_reg_file_dst),
+	  .reg_file_out1(ID_stage_reg_file_out1), .reg_file_out2(ID_stage_reg_file_out2),
+	  .signed_immediate(ID_stage_signed_immediate),
+	  .shifter_operand(ID_stage_shifter_operand),
+	  .EX_command_out(ID_stage_EX_command_out),
+	  .mem_read_out(ID_stage_mem_read_out), .mem_write_out(ID_stage_mem_write_out),
+		.WB_en_out(ID_stage_WB_en_out),
+		.Imm_out(ID_stage_Imm_out),
+		.B_out(ID_stage_B_out),
+		.update_out(ID_stage_update_out)
   );
 
   wire [`WORD_WIDTH-1:0] ID_reg_pc_out;
@@ -104,10 +124,10 @@ module ARM
     .pc(MEM_reg_pc_out),
     .instruction(MEM_reg_instruction_out)
   );
-  
+
   wire [`WORD_WIDTH-1:0] WB_stage_pc_out;
   wire [`WORD_WIDTH-1:0] WB_stage_instruction_out;
-  
+
   WB_Stage WB_Stage_Inst(
     .clk(clk),
     .rst(rst),
@@ -116,5 +136,5 @@ module ARM
     .pc(WB_stage_pc_out),
     .instruction(WB_stage_instruction_out)
   );
-  
+
 endmodule
