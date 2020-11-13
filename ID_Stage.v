@@ -2,24 +2,25 @@
 
 module ID_Stage
 (
-	input                    						clk,
-	input                    						rst,
-	input  [`WORD_WIDTH-1:0] 						pc_in,
-	input  [`WORD_WIDTH-1:0] 						instruction_in,
-	input  [`REG_FILE_DEPTH-1:0]				reg_file_wb_address,
-	input  [`WORD_WIDTH-1:0] 						reg_file_wb_data,
-	output [`WORD_WIDTH-1:0] 						pc,
-	output [`WORD_WIDTH-1:0] 						instruction,
-	output [`REG_FILE_DEPTH-1:0] 				reg_file_dst,
-	output [`WORD_WIDTH-1:0] 						reg_file_out1, reg_file_out2,
-	output [`SIGNED_IMM_WIDTH-1:0] 			signed_immediate,
+	input                    					     	clk,
+	input                    						     rst,
+	input  [`WORD_WIDTH-1:0] 						     pc_in,
+	input  [`WORD_WIDTH-1:0] 						     instruction_in,
+	input  [`REG_FILE_DEPTH-1:0]			     reg_file_wb_address,
+	input  [`WORD_WIDTH-1:0] 						     reg_file_wb_data,
+	input  [3:0]                        status_register,
+	output [`WORD_WIDTH-1:0] 						     pc,
+	output [`WORD_WIDTH-1:0] 						     instruction,
+	output [`REG_FILE_DEPTH-1:0] 		     reg_file_dst,
+	output [`WORD_WIDTH-1:0] 						     reg_file_out1, reg_file_out2,
+	output [`SIGNED_IMM_WIDTH-1:0]      signed_immediate,
 	output [`SHIFTER_OPERAND_WIDTH-1:0] shifter_operand,
-	output [3:0] 												EX_command_out,
-	output mem_read_out, mem_write_out,
-		WB_en_out,
-		Imm_out,
-		B_out,
-		update_out
+	output [3:0] 												           EX_command_out,
+	output                              mem_read_out, mem_write_out,
+	output                              WB_en_out,
+	output                              Imm_out,
+	output                              B_out,
+	output                              update_out
 );
 
 	wire [3:0] EX_command;
@@ -29,9 +30,9 @@ module ID_Stage
 		B,
 		update;
 
-	wire [9:0] control_unit_mux_in, control_unit_mux_out;
+	wire [9:0] control_unit_mux_in, control_unit_mux_out, condition_state;
 	wire [`REG_FILE_DEPTH-1:0] reg_file_src1, reg_file_src2;
-
+  
 	MUX_2_to_1 MUX_2_to_1_Reg_File (
 		.in1(instruction_in[15:12]), .in2(instruction_in[3:0]),
 		.sel(mem_write),
@@ -62,18 +63,23 @@ module ID_Stage
 		.B(B),
 		.update(update)
 	);
+	
+	Condition_Check Condition_Check_Inst (
+	   .condition(instruction_in[31:28]),
+	   .status_register(status_register),
+	   .condition_state(condition_state)
+	);
 
 	assign pc = pc_in;
 	assign instruction = instruction_in;
-	assign control_unit_mux_enable = 0;
+	assign control_unit_mux_enable = ~condition_state;
 	assign control_unit_mux_in = {update, B, EX_command, mem_write, mem_read, WB_en, Imm};
 	assign {update_out,
-	B_out,
-	EX_command_out,
-	mem_write_out, mem_read_out,
-	WB_en_out,
-	Imm_out
-	} = control_unit_mux_out;
+	         B_out,
+	         EX_command_out,
+	         mem_write_out, mem_read_out,
+	         WB_en_out,
+	         Imm_out} = control_unit_mux_out;
 	assign shifter_operand = instruction_in[11:0];
 	assign reg_file_dst = instruction_in[15:12];
 	assign reg_file_src1 = instruction_in[19:16];
