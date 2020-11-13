@@ -108,9 +108,7 @@ module ARM
 		.B_out(ID_reg_B_out),
     .update_out(ID_reg_update_out),
     .status_register_in(status),
-    .status_load_in(),
-    .status_register_out(status_register_out),
-    .status_load_out()
+    .status_register_out(status_register_out)
   );
 
   wire [`WORD_WIDTH-1:0] EXE_stage_pc_out;
