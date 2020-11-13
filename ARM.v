@@ -40,6 +40,7 @@ module ARM
 	wire [`SIGNED_IMM_WIDTH-1:0] 			ID_stage_signed_immediate;
 	wire [`SHIFTER_OPERAND_WIDTH-1:0] ID_stage_shifter_operand;
 	wire [3:0] 												ID_stage_EX_command_out;
+	wire [3:0]              status;
 	wire ID_stage_mem_read_out, ID_stage_mem_write_out,
 		ID_stage_WB_en_out,
 		ID_stage_Imm_out,
@@ -51,6 +52,7 @@ module ARM
     .rst(rst),
     .pc_in(IF_reg_pc_out),
     .instruction_in(IF_reg_instruction_out),
+    .status_register(status),
     .pc(ID_stage_pc_out),
     .instruction(ID_stage_instruction_out),
 	  .reg_file_dst(ID_stage_reg_file_dst),
@@ -71,7 +73,7 @@ module ARM
   wire [`WORD_WIDTH-1:0] ID_reg_reg_file_out1_out, ID_reg_reg_file_out2_out;
   wire [`SIGNED_IMM_WIDTH-1:0] ID_reg_signed_immediate_out;
   wire [`SHIFTER_OPERAND_WIDTH-1:0] ID_reg_shifter_operand_out;
-  wire [3:0] ID_reg_EX_command_out;
+  wire [3:0] status_register_out, ID_reg_EX_command_out;
   wire ID_reg_mem_read_out, ID_reg_mem_write_out,
     ID_reg_WB_en_out,
     ID_reg_Imm_out,
@@ -104,7 +106,11 @@ module ARM
 		.WB_en_out(ID_reg_WB_en_out),
 		.Imm_out(ID_reg_Imm_out),
 		.B_out(ID_reg_B_out),
-    .update_out(ID_reg_update_out)
+    .update_out(ID_reg_update_out),
+    .status_register_in(status),
+    .status_load_in(),
+    .status_register_out(status_register_out),
+    .status_load_out()
   );
 
   wire [`WORD_WIDTH-1:0] EXE_stage_pc_out;
@@ -166,5 +172,14 @@ module ARM
     .pc(WB_stage_pc_out),
     .instruction(WB_stage_instruction_out)
   );
+  
+  Status_Reg Status_Reg_Inst(
+    .clk(clk),
+    .rst(rst),
+    .load(),
+    .status_in(),
+    .status(status)
+  );
 
 endmodule
+
