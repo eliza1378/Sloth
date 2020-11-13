@@ -17,7 +17,6 @@ module ID_Reg
     Imm_in,
     B_in,
     update_in,
-    status_load_in,
   output reg [`WORD_WIDTH-1:0]            pc,
   output reg [`WORD_WIDTH-1:0]            instruction,
   output reg [`REG_FILE_DEPTH-1:0] 				reg_file_dst_out,
@@ -30,8 +29,7 @@ module ID_Reg
     WB_en_out,
     Imm_out,
     B_out,
-    update_out,
-    status_load_out
+    update_out
 );
 
   always @(posedge clk) begin
@@ -50,7 +48,6 @@ module ID_Reg
     Imm_out <= Imm_in;
     B_out <= B_in;
     update_out <= update_in;
-    status_load_out <= status_load_in;
   end
 
 endmodule
