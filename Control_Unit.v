@@ -2,14 +2,13 @@
 
 module Control_Unit
 (
-    input            S, I,
+    input            S,
     input      [1:0] mode,
     input      [3:0] op_code,
     output reg [3:0] EX_command,
     output reg       mem_read,
     output reg       mem_write,
     output reg       WB_en,
-    output reg       Imm,
     output reg       B,
     output reg       update
 );
