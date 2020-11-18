@@ -10,7 +10,7 @@ module Control_Unit
     output reg       mem_write,
     output reg       WB_en,
     output reg       B,
-    output reg       update
+    output       SR_update
 );
 
     always @(*) begin
@@ -95,5 +95,7 @@ module Control_Unit
             end
         endcase
     end
+
+    assign SR_update = S;
 
 endmodule
