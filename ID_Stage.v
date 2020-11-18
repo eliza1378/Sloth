@@ -30,10 +30,11 @@ module ID_Stage
 		B,
 		SR_update;
 
-	wire [8:0] control_unit_mux_in, control_unit_mux_out, condition_state;
+	wire [8:0] control_unit_mux_in, control_unit_mux_out;
+	wire condition_state;
 	wire [`REG_FILE_DEPTH-1:0] reg_file_src1, reg_file_src2;
 
-	MUX_2_to_1 MUX_2_to_1_Reg_File (
+	MUX_2_to_1 #(.WORD_WIDTH(4)) MUX_2_to_1_Reg_File (
 		.in1(instruction_in[15:12]), .in2(instruction_in[3:0]),
 		.sel(mem_write),
 		.out(reg_file_src2)
@@ -49,7 +50,7 @@ module ID_Stage
 	);
 
 	MUX_2_to_1 #(.WORD_WIDTH(9)) MUX_2_to_1_Control_Unit (
-		.in1(control_unit_mux_in), .in2(0),
+		.in1(control_unit_mux_in), .in2(9'b0),
 		.sel(control_unit_mux_enable),
 		.out(control_unit_mux_out)
 	);

@@ -88,7 +88,7 @@ module ARM
     .pc_in(ID_stage_pc_out),
     .instruction_in(ID_stage_instruction_out),
     .reg_file_dst_in(ID_stage_reg_file_dst),
-	  .reg_file_out1_in(ID_stage_val_Rn), .reg_file_out2_in(ID_stage_val_Rm),
+	  .val_Rn_in(ID_stage_val_Rn), .val_Rm_in(ID_stage_val_Rm),
 	  .signed_immediate_in(ID_stage_signed_immediate),
 	  .shifter_operand_in(ID_stage_shifter_operand),
     .EX_command_in(ID_stage_EX_command_out),
