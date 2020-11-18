@@ -28,7 +28,7 @@ module ARM
    .clk(clk),
    .rst(rst),
    .freeze(1'b0),
-   .flush(1'b0),
+   .flush(EXE_stage_B_out),
    .pc_in(IF_stage_pc_out),
    .instruction_in(IF_stage_instruction_out),
    .pc(IF_reg_pc_out),
@@ -85,6 +85,7 @@ module ARM
   ID_Reg ID_Reg_Inst(
     .clk(clk),
     .rst(rst),
+    .flush(EXE_stage_B_out),
     .pc_in(ID_stage_pc_out),
     .instruction_in(ID_stage_instruction_out),
     .reg_file_dst_in(ID_stage_reg_file_dst),
