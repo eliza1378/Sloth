@@ -33,8 +33,8 @@ module ID_Reg
     SR_update_out
 );
 
-  always @(posedge clk) begin
-    if (flush) begin
+  always @(posedge clk, posedge rst) begin
+    if (flush | rst) begin
       pc <= 0;
       instruction <= 0;
       reg_file_dst_out <= 0;

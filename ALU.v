@@ -9,7 +9,8 @@ module ALU
     output  [3:0]               SR
 );
 
-    wire Z1, C1, N1, V1;
+    reg V1, C1;
+    wire N1, Z1;
     reg [`WORD_WIDTH:0] temp_res;
 
     assign res = temp_res[`WORD_WIDTH-1:0];
@@ -17,10 +18,10 @@ module ALU
 
     assign N1 = res[`WORD_WIDTH-1];
     assign Z1 = |res ? 0:1;
-    assign C1 = temp_res[`WORD_WIDTH];
-    assign V1 = 1'b0;
 
     always @(*) begin
+        V1 = 1'b0;
+        C1 = 1'b0;
         case (EX_command)
             `EX_MOV: begin
                 temp_res = val2;
@@ -30,15 +31,24 @@ module ALU
             end
             `EX_ADD: begin
                 temp_res = val1 + val2;
+                C1 = temp_res[`WORD_WIDTH];
+                V1 = (val1[`WORD_WIDTH-1] ~^ val2[`WORD_WIDTH-1]) & (temp_res[`WORD_WIDTH-1] ^ val1[`WORD_WIDTH-1]);
             end
             `EX_ADC: begin
                 temp_res = val1 + val2 + carry;
+                C1 = temp_res[`WORD_WIDTH];
+                V1 = (val1[`WORD_WIDTH-1] ~^ val2[`WORD_WIDTH-1]) & (temp_res[`WORD_WIDTH-1] ^ val1[`WORD_WIDTH-1]);
             end
             `EX_SUB: begin
-                temp_res = val1 - val2;
+                temp_res = {val1[`WORD_WIDTH-1], val1} - {val2[`WORD_WIDTH-1], val2};
+                C1 = temp_res[`WORD_WIDTH];
+                V1 = (val1[`WORD_WIDTH-1] ^ val2[`WORD_WIDTH-1]) & (temp_res[`WORD_WIDTH-1] ^ val1[`WORD_WIDTH-1]);
+
             end
             `EX_SBC: begin
                 temp_res = val1 - val2 - 2'b01;
+                C1 = temp_res[`WORD_WIDTH];
+                V1 = (val1[`WORD_WIDTH-1] ^ val2[`WORD_WIDTH-1]) & (temp_res[`WORD_WIDTH-1] ^ val1[`WORD_WIDTH-1]);
             end
             `EX_AND: begin
                 temp_res = val1 & val2;

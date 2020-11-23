@@ -13,9 +13,9 @@ module Val2_Generator
     integer i;
 
     always @(*) begin
-        if(is_for_memory == 1'b0)
+        if(is_for_memory == 1'b1)
             val2_out = {20'b0, shifter_operand};
-        else if(imm == 1'b0) begin
+        else if(imm == 1'b1) begin
             _32bit_immd_temp = {24'b0, shifter_operand[7:0]};
 
             for (i=0; i<{shifter_operand[11:8], 1'b0}; i=i+1) begin

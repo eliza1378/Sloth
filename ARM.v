@@ -49,11 +49,18 @@ module ARM
 		ID_stage_B_out,
 		ID_stage_SR_update_out;
 
+  wire [`REG_FILE_DEPTH-1:0] WB_Stage_dst_out;
+  wire [`WORD_WIDTH-1:0] WB_Value;
+  wire WB_Stage_WB_en_out;
+
   ID_Stage ID_Stage_Inst(
     .clk(clk),
     .rst(rst),
     .pc_in(IF_reg_pc_out),
     .instruction_in(IF_reg_instruction_out),
+    .reg_file_wb_address(WB_Stage_dst_out),
+	  .reg_file_wb_data(WB_Value),
+	  .reg_file_enable(WB_Stage_WB_en_out),
     .status_register(status),
     .pc(ID_stage_pc_out),
     .instruction(ID_stage_instruction_out),
@@ -176,40 +183,59 @@ module ARM
     .instruction(EXE_reg_instruction_out)
   );
 
-  wire [`WORD_WIDTH-1:0] MEM_stage_pc_out;
-  wire [`WORD_WIDTH-1:0] MEM_stage_instruction_out;
-
-  MEM_Stage MEM_Stage_Inst(
+  wire [`REG_FILE_DEPTH-1:0] Mem_Stage_dst_out;
+  wire [`WORD_WIDTH-1:0] Mem_Stage_ALU_res_out;
+  wire [`WORD_WIDTH-1:0] Mem_Stage_mem_out;
+  wire Mem_Stage_read_out, Mem_Stage_WB_en_out;
+  
+  Mem_Stage Mem_Stage_Inst(
     .clk(clk),
     .rst(rst),
-    .pc_in(EXE_reg_pc_out),
-    .instruction_in(EXE_reg_instruction_out),
-    .pc(MEM_stage_pc_out),
-    .instruction(MEM_stage_instruction_out)
+    .dst(EXE_reg_dst_out),
+    .ALU_res(EXE_reg_ALU_res_out),
+    .val_Rm(EXE_reg_val_Rm_out),
+    .mem_read(EXE_reg_mem_read_out),
+    .mem_write(EXE_reg_mem_write_out), 
+    .WB_en(EXE_reg_WB_en_out),
+    .dst_out(Mem_Stage_dst_out),
+    .ALU_res_out(Mem_Stage_ALU_res_out),
+    .mem_out(Mem_Stage_mem_out),
+    .mem_read_out(Mem_Stage_read_out), 
+    .WB_en_out(Mem_Stage_WB_en_out)
   );
 
-  wire [`WORD_WIDTH-1:0] MEM_reg_pc_out;
-  wire [`WORD_WIDTH-1:0] MEM_reg_instruction_out;
-
-  MEM_Reg MEM_Reg_Inst(
+  wire [`REG_FILE_DEPTH-1:0] Mem_Reg_dst_out;
+  wire [`WORD_WIDTH-1:0] Mem_Reg_ALU_res_out;
+  wire [`WORD_WIDTH-1:0] Mem_Reg_mem_out;
+  wire Mem_Reg_read_out, Mem_Reg_WB_en_out;
+  
+  MEM_Reg Mem_Reg_Inst(
     .clk(clk),
     .rst(rst),
-    .pc_in(MEM_stage_pc_out),
-    .instruction_in(MEM_stage_instruction_out),
-    .pc(MEM_reg_pc_out),
-    .instruction(MEM_reg_instruction_out)
-  );
+    .dst(Mem_Stage_dst_out),
+    .ALU_res(Mem_Stage_ALU_res_out),
+    .mem(Mem_Stage_mem_out),
+    .mem_read(Mem_Stage_read_out), 
+    .WB_en(Mem_Stage_WB_en_out),
 
-  wire [`WORD_WIDTH-1:0] WB_stage_pc_out;
-  wire [`WORD_WIDTH-1:0] WB_stage_instruction_out;
+    .dst_out(Mem_Reg_dst_out),
+    .ALU_res_out(Mem_Reg_ALU_res_out),
+    .mem_out(Mem_Reg_mem_out),
+    .mem_read_out(Mem_Reg_read_out), 
+    .WB_en_out(Mem_Reg_WB_en_out)
+  );
 
   WB_Stage WB_Stage_Inst(
     .clk(clk),
     .rst(rst),
-    .pc_in(MEM_reg_pc_out),
-    .instruction_in(MEM_reg_instruction_out),
-    .pc(WB_stage_pc_out),
-    .instruction(WB_stage_instruction_out)
+    .dst(Mem_Reg_dst_out),
+    .ALU_res(Mem_Reg_ALU_res_out),
+    .mem(Mem_Reg_mem_out),
+    .mem_read(Mem_Reg_read_out),
+    .WB_en(Mem_Reg_WB_en_out),
+    .WB_Dest(WB_Stage_dst_out),
+    .WB_en_out(WB_Stage_WB_en_out),
+    .WB_Value(WB_Value)
   );
 
   Status_Reg Status_Reg_Inst(

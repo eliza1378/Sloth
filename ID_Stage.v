@@ -8,6 +8,7 @@ module ID_Stage
 	input  [`WORD_WIDTH-1:0] 						instruction_in,
 	input  [`REG_FILE_DEPTH-1:0]			  reg_file_wb_address,
 	input  [`WORD_WIDTH-1:0] 						reg_file_wb_data,
+	input 										reg_file_enable,
 	input  [3:0]                        status_register,
 	output [`WORD_WIDTH-1:0] 						pc,
 	output [`WORD_WIDTH-1:0] 						instruction,
@@ -35,14 +36,14 @@ module ID_Stage
 	wire [`REG_FILE_DEPTH-1:0] reg_file_src1, reg_file_src2;
 
 	MUX_2_to_1 #(.WORD_WIDTH(4)) MUX_2_to_1_Reg_File (
-		.in1(instruction_in[15:12]), .in2(instruction_in[3:0]),
+		.in1(instruction_in[3:0]), .in2(instruction_in[15:12]),
 		.sel(mem_write),
 		.out(reg_file_src2)
 	);
 
 	Register_File register_file(
 		.clk(clk), .rst(rst),
-		.WB_en(WB_en),
+		.WB_en(reg_file_enable),
 		.src1(reg_file_src1), .src2(reg_file_src2),
 		.WB_dest(reg_file_wb_address),
 		.WB_result(reg_file_wb_data),
