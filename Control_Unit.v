@@ -10,7 +10,8 @@ module Control_Unit
     output reg       mem_write,
     output reg       WB_en,
     output reg       B,
-    output       SR_update
+    output       SR_update,
+    output       has_src1
 );
 
     always @(*) begin
@@ -97,5 +98,7 @@ module Control_Unit
     end
 
     assign SR_update = S;
+    assign has_src1 = (EX_command == `EX_MOV || 
+                       EX_command == `EX_MOV || B) ? 1'b0 : 1'b1;
 
 endmodule
