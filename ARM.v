@@ -10,6 +10,7 @@ module ARM
   wire [`WORD_WIDTH-1:0] IF_stage_instruction_out;
   wire [`WORD_WIDTH-1:0] branch_address;
   wire EXE_stage_B_out;
+  wire hazard_detected;
 
   IF_Stage  IF_Stage_Inst (
    .clk(clk),
@@ -52,6 +53,7 @@ module ARM
   wire [`REG_FILE_DEPTH-1:0] WB_Stage_dst_out;
   wire [`WORD_WIDTH-1:0] WB_Value;
   wire WB_Stage_WB_en_out;
+  wire has_src2;
 
   ID_Stage ID_Stage_Inst(
     .clk(clk),
@@ -73,7 +75,9 @@ module ARM
 		.WB_en_out(ID_stage_WB_en_out),
 		.Imm_out(ID_stage_Imm_out),
 		.B_out(ID_stage_B_out),
-		.SR_update_out(ID_stage_SR_update_out)
+		.SR_update_out(ID_stage_SR_update_out),
+		.has_src2(has_src2),
+		.has_src1(has_src1)
   );
 
   wire [`WORD_WIDTH-1:0] ID_reg_pc_out;
@@ -245,5 +249,18 @@ module ARM
     .status_in(EXE_stage_SR_out),
     .status(status)
   );
+  
+  Hazard_Detection_Unit Hazard_Detection_Unit_Inst(
+    .src1(),
+    .src2(), 
+    .EXE_dest(),
+    .MEM_dest(),
+    .EXE_WB_en(),
+    .MEM_WB_en(),
+    .has_src1(has_src1),
+    .has_src2(has_src2),
+    .hazard_detected(hazard_detected)
+  );
 
 endmodule
+
