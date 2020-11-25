@@ -21,7 +21,9 @@ module ID_Stage
 	output                              WB_en_out,
 	output                              Imm_out,
 	output                              B_out,
-	output                              SR_update_out
+	output                              SR_update_out,
+	output                              has_src2,
+	output                              has_src1
 );
 
 	wire [3:0] EX_command;
@@ -62,7 +64,8 @@ module ID_Stage
 		.EX_command(EX_command),
 		.mem_read(mem_read), .mem_write(mem_write),
 		.WB_en(WB_en), .B(B),
-		.SR_update(SR_update)
+		.SR_update(SR_update),
+		.has_src1(has_src1)
 	);
 
 	Condition_Check Condition_Check_Inst (
@@ -85,5 +88,6 @@ module ID_Stage
 	assign reg_file_src1 = instruction_in[19:16];
 	assign signed_immediate = instruction_in[23:0];
 	assign Imm_out = instruction_in[25];
+	assign has_src2 = (~instruction_in[25]) | mem_write;
 
 endmodule
