@@ -253,13 +253,18 @@ module ARM
     .status(status)
   );
   
+  wire EXE_WB_en = ID_reg_WB_en_out;
+  wire MEM_WB_en = EXE_reg_WB_en_out;
+  wire EXE_dest = ID_reg_reg_file_dst_out;
+  wire MEM_dest = EXE_reg_dst_out;
+  
   Hazard_Detection_Unit Hazard_Detection_Unit_Inst(
     .src1(),
     .src2(), 
-    .EXE_dest(),
-    .MEM_dest(),
-    .EXE_WB_en(),
-    .MEM_WB_en(),
+    .EXE_dest(EXE_dest),
+    .MEM_dest(MEM_dest),
+    .EXE_WB_en(EXE_WB_en),
+    .MEM_WB_en(MEM_WB_en),
     .has_src1(has_src1),
     .has_src2(has_src2),
     .hazard_detected(hazard_detected)
