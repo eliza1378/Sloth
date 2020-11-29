@@ -2,8 +2,9 @@
 
 module MEM_Reg
 (
-    input                        clk,
-    input                        rst,
+    input                       clk,
+    input                       rst,
+    input                       freeze,
     input [`REG_FILE_DEPTH-1:0] dst,
     input [`WORD_WIDTH-1:0] ALU_res,
     input [`WORD_WIDTH-1:0] mem,
@@ -23,7 +24,7 @@ always @(posedge clk, posedge rst) begin
         mem_read_out <= 0;
         WB_en_out <= 0;
     end
-    else begin
+    else if(~freeze) begin
         dst_out <= dst;
         ALU_res_out <= ALU_res;
         mem_out <= mem;
