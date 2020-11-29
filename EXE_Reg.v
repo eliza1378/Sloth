@@ -4,6 +4,7 @@ module EXE_Reg
 (
   input                    clk,
   input                    rst,
+  input                    freeze,
   input  [`WORD_WIDTH-1:0] pc_in,
   input  [`WORD_WIDTH-1:0] instruction_in,
   input  [`REG_FILE_DEPTH-1:0] dst_in,
@@ -29,7 +30,7 @@ always @(posedge clk, posedge rst) begin
       mem_write_out <= 0;
       WB_en_out <= 0;
     end
-    else begin
+    else if(~freeze) begin
       pc <= pc_in;
       instruction <= instruction_in;
       dst_out <= dst_in;
@@ -42,3 +43,4 @@ always @(posedge clk, posedge rst) begin
 end
 
 endmodule
+
