@@ -9,7 +9,7 @@ module Status_Reg
     output reg [3:0] status
 );
 
-always @(posedge clk or posedge rst) begin
+    always @(negedge clk or posedge rst) begin
   if(rst) begin
     status <= 0;
   end  
