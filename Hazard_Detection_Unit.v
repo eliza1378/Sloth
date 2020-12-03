@@ -13,16 +13,16 @@ module Hazard_Detection_Unit (
 );
 
   always @(*) begin
-    if (src1 == EXE_dest && EXE_WB_en) begin
+    if ((src1 == EXE_dest) && (EXE_WB_en == 1'b1) && (has_src1 == 1'b1)) begin
       hazard_detected = 1'b1;
     end
-    else if (src1 == MEM_dest && MEM_WB_en) begin
+    else if ((src1 == MEM_dest) && (MEM_WB_en == 1'b1) && (has_src1 == 1'b1)) begin
       hazard_detected = 1'b1;
     end
-    else if (src2 == EXE_dest && EXE_WB_en && has_src2) begin
+    else if ((src2 == EXE_dest) && (EXE_WB_en == 1'b1) && (has_src2 == 1'b1)) begin
       hazard_detected = 1'b1;
     end
-    else if (src2 == MEM_dest && MEM_WB_en && has_src2) begin
+    else if ((src2 == MEM_dest) && (MEM_WB_en == 1'b1) && (has_src2 == 1'b1)) begin
       hazard_detected = 1'b1;
     end
     else begin
@@ -31,3 +31,4 @@ module Hazard_Detection_Unit (
   end
 
 endmodule
+
