@@ -31,7 +31,7 @@ module ARM_TB;
 
   initial begin
     $monitor("@%3tns: pc = %0d , instruction = %0d",
-      $time, CPU.WB_Stage_Inst.pc, CPU.WB_Stage_Inst.instruction);
+      $time, CPU.ID_Stage_Inst.pc_in, CPU.ID_Stage_Inst.instruction_in);
     end
 
 endmodule
