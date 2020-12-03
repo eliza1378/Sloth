@@ -15,7 +15,7 @@ module ARM
   IF_Stage  IF_Stage_Inst (
    .clk(clk),
    .rst(rst),
-   .freeze(1'b0),
+   .freeze(hazard_detected),
    .branch_taken(EXE_stage_B_out),
    .branch_addr(branch_address),
    .pc(IF_stage_pc_out),
@@ -175,7 +175,6 @@ module ARM
   EXE_Reg EXE_Reg_Inst(
     .clk(clk),
     .rst(rst),
-    .freeze(hazard_detected),
     .pc_in(EXE_stage_pc_out),
     .instruction_in(EXE_stage_instruction_out),
     .dst_in(EXE_stage_reg_file_dst_out),
@@ -221,7 +220,6 @@ module ARM
   MEM_Reg Mem_Reg_Inst(
     .clk(clk),
     .rst(rst),
-    .freeze(hazard_detected),
     .dst(Mem_Stage_dst_out),
     .ALU_res(Mem_Stage_ALU_res_out),
     .mem(Mem_Stage_mem_out),

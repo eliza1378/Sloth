@@ -25,13 +25,7 @@ module ARM_TB;
     // rst = 1;
     // # clock_period;
     // rst = 0;
-    # (8*clock_period);
+    # (100*clock_period);
     $stop;
   end
-
-  initial begin
-    $monitor("@%3tns: pc = %0d , instruction = %0d",
-      $time, CPU.ID_Stage_Inst.pc_in, CPU.ID_Stage_Inst.instruction_in);
-    end
-
 endmodule
