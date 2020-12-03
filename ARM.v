@@ -256,8 +256,8 @@ module ARM
     .status(status)
   );
 
-  wire[`REG_FILE_DEPTH-1:0] EXE_WB_en = ID_reg_WB_en_out;
-  wire[`REG_FILE_DEPTH-1:0] MEM_WB_en = EXE_reg_WB_en_out;
+  wire EXE_WB_en = ID_reg_WB_en_out;
+  wire MEM_WB_en = EXE_reg_WB_en_out;
   wire[`REG_FILE_DEPTH-1:0] EXE_dest = ID_reg_reg_file_dst_out;
   wire[`REG_FILE_DEPTH-1:0] MEM_dest = EXE_reg_dst_out;
 
@@ -274,3 +274,4 @@ module ARM
   );
 
 endmodule
+
