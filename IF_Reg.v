@@ -17,10 +17,10 @@ always @(posedge clk or posedge rst) begin
     pc <= 0;
     instruction <= 0;
   end  
-  else if(~freeze && flush) begin
-    pc <= 0;
-    instruction <= 0;
-  end
+  // else if(~freeze && flush) begin
+  //   pc <= 0;
+  //   instruction <= 0;
+  // end
   else if(~freeze) begin
     pc <= pc_in;
     instruction <= instruction_in;

@@ -33,7 +33,7 @@ module Memory
                         mem_data[{generatedAddr[`WORD_WIDTH-1:2], 2'b11}] <= Val_Rm[31:24];
 			end
 	end
-    assign res_data = mem_r_en ? {{generatedAddr[`WORD_WIDTH-1:2], 2'b11}, {generatedAddr[`WORD_WIDTH-1:2], 2'b10}, 
-                                    {generatedAddr[`WORD_WIDTH-1:1], 1'b1}, generatedAddr}: `WORD_WIDTH'b0;
+    assign res_data = mem_r_en ? {mem_data[{generatedAddr[`WORD_WIDTH-1:2], 2'b11}], mem_data[{generatedAddr[`WORD_WIDTH-1:2], 2'b10}], 
+                                    mem_data[{generatedAddr[`WORD_WIDTH-1:1], 1'b1}], mem_data[{generatedAddr}]}: `WORD_WIDTH'b0;
 
 endmodule

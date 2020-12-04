@@ -35,7 +35,7 @@ module ID_Reg
 );
 
   always @(posedge clk, posedge rst) begin
-    if (rst || (~freeze && flush)) begin
+    if (rst || freeze || flush) begin
       pc <= 0;
       instruction <= 0;
       reg_file_dst_out <= 0;
@@ -52,7 +52,7 @@ module ID_Reg
       B_out <= 0;
       SR_update_out <= 0;
     end
-    else if(~freeze) begin
+    else begin
       pc <= pc_in;
       instruction <= instruction_in;
       reg_file_dst_out <= reg_file_dst_in;

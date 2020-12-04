@@ -36,7 +36,8 @@ module IF_Stage
   );
 
   Adder Adder_Inst (
-   .a(32'b100),
+  //  .a(32'b0100),
+   .a(32'b01),
    .b(pc_out),
    .out(adder_out)
   );
