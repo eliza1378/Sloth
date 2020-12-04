@@ -60,7 +60,9 @@ module ALU
                 temp_res = val1 ^ val2;
             end
             `EX_CMP: begin
-                temp_res = val1 - val2;
+                temp_res = {val1[`WORD_WIDTH-1], val1} - {val2[`WORD_WIDTH-1], val2};
+                C1 = temp_res[`WORD_WIDTH];
+                V1 = (val1[`WORD_WIDTH-1] ^ val2[`WORD_WIDTH-1]) & (temp_res[`WORD_WIDTH-1] ^ val1[`WORD_WIDTH-1]);
             end
             `EX_TST: begin
                 temp_res = val1 & val2;
