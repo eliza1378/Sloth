@@ -21,7 +21,7 @@ module ARM_TB;
     rst = 1;
     # (clock_period / 2);
     rst = 0;
-    # (120*clock_period);
+    # (600*clock_period);
     $stop;
   end
 endmodule

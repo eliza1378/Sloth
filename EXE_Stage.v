@@ -28,7 +28,7 @@ module EXE_Stage
 
   Adder Adder_Inst(
     .a(pc_in),
-    .b({{(6){signed_immediate[`SIGNED_IMM_WIDTH-1]}}, signed_immediate, 2'b0}),
+    .b({{(8){signed_immediate[`SIGNED_IMM_WIDTH-1]}}, signed_immediate}),
     .out(branch_address)
   );
 
