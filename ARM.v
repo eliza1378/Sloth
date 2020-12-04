@@ -59,6 +59,7 @@ module ARM
   ID_Stage ID_Stage_Inst(
     .clk(clk),
     .rst(rst),
+    .freeze(hazard_detected),
     .pc_in(IF_reg_pc_out),
     .instruction_in(IF_reg_instruction_out),
     .reg_file_wb_address(WB_Stage_dst_out),
@@ -99,7 +100,6 @@ module ARM
   ID_Reg ID_Reg_Inst(
     .clk(clk),
     .rst(rst),
-    .freeze(hazard_detected),
     .flush(EXE_stage_B_out),
     .pc_in(ID_stage_pc_out),
     .instruction_in(ID_stage_instruction_out),

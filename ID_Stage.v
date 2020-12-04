@@ -4,6 +4,7 @@ module ID_Stage
 (
 	input                    					  clk,
 	input                    						rst,
+	input 											freeze,
 	input  [`WORD_WIDTH-1:0] 						pc_in,
 	input  [`WORD_WIDTH-1:0] 						instruction_in,
 	input  [`REG_FILE_DEPTH-1:0]			  reg_file_wb_address,
@@ -77,7 +78,7 @@ module ID_Stage
 
 	assign pc = pc_in;
 	assign instruction = instruction_in;
-	assign control_unit_mux_enable = ~condition_state;
+	assign control_unit_mux_enable = (~condition_state) | freeze;
 	assign control_unit_mux_in = {SR_update, B, EX_command, mem_write, mem_read, WB_en};
 	assign {SR_update_out,
 	         B_out,

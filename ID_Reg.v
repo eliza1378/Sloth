@@ -5,7 +5,6 @@ module ID_Reg
   input                               clk,
   input                               rst,
   input                               flush,
-  input                               freeze,
   input [`WORD_WIDTH-1:0]             pc_in,
   input [`WORD_WIDTH-1:0]             instruction_in,
   input [`REG_FILE_DEPTH-1:0] 				reg_file_dst_in,
@@ -35,7 +34,7 @@ module ID_Reg
 );
 
   always @(posedge clk, posedge rst) begin
-    if (rst || freeze || flush) begin
+    if (rst || flush) begin
       pc <= 0;
       instruction <= 0;
       reg_file_dst_out <= 0;
