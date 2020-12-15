@@ -3,7 +3,8 @@
 module ARM
 (
   input clk,
-  input rst
+  input rst,
+  input enableForwarding
 );
 
   wire [`WORD_WIDTH-1:0] IF_stage_pc_out;
@@ -138,11 +139,21 @@ module ARM
   wire EXE_stage_mem_read_out, EXE_stage_mem_write_out,
     EXE_stage_WB_en_out;
 
+
+  // input  [1:0] sel_src1,
+  // input  [1:0] sel_src2, 
+  // input  [`WORD_WIDTH-1:0] MEM_stage_val,
+  // input  [`WORD_WIDTH-1:0] WB_stage_val,
+
+
   EXE_Stage EXE_Stage_Inst(
     .clk(clk),
     .rst(rst),
     .pc_in(ID_reg_pc_out),
     .instruction_in(ID_reg_instruction_out),
+    .sel_src1()
+
+
     .signed_immediate(ID_reg_signed_immediate_out),
     .EX_command(ID_reg_EX_command_out),
     .SR_in(ID_reg_SR_out),
@@ -260,16 +271,32 @@ module ARM
   wire[`REG_FILE_DEPTH-1:0] MEM_dest = EXE_reg_dst_out;
 
   Hazard_Detection_Unit Hazard_Detection_Unit_Inst(
+    .enableForwarding(enableForwarding),
     .src1(ID_stage_reg_file_src1),
     .src2(ID_stage_reg_file_src2),
     .EXE_dest(EXE_dest),
     .MEM_dest(MEM_dest),
     .EXE_WB_en(EXE_WB_en),
     .MEM_WB_en(MEM_WB_en),
+    .EXE_memread_en(EXE_stage_mem_read_out),
     .has_src1(has_src1),
     .has_src2(has_src2),
     .hazard_detected(hazard_detected)
   );
+
+
+
+  Forwarding_Unit Forwarding_Unit_Inst(
+    .enable(enableForwarding),
+    input  [`REG_FILE_DEPTH-1:0] src1,
+    input  [`REG_FILE_DEPTH-1:0] src2,
+    input  [`REG_FILE_DEPTH-1:0] MEM_dest,
+    input  [`REG_FILE_DEPTH-1:0] WB_dest,
+    input        MEM_WB_en,
+    input        WB_WB_en,
+    output reg sel_src1, 
+    output reg sel_src2
+);
 
 endmodule
 
