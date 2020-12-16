@@ -10,7 +10,7 @@ module MUX_4_to_1
   out
 );
   parameter WORD_WIDTH = `WORD_WIDTH;
-  input       sel;
+  input       [1:0] sel;
   input       [WORD_WIDTH-1:0] in1, in2, in3, in4;
   output reg  [WORD_WIDTH-1:0] out;
 

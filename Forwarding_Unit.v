@@ -8,8 +8,8 @@ module Forwarding_Unit (
     input  [`REG_FILE_DEPTH-1:0] WB_dest,
     input        MEM_WB_en,
     input        WB_WB_en,
-    output reg sel_src1, 
-    output reg sel_src2
+    output reg [1:0] sel_src1,
+    output reg [1:0] sel_src2
 );
 
   always @(*) begin
@@ -20,7 +20,7 @@ module Forwarding_Unit (
             sel_src1 = `FORWARDING_SEL_MEM;
         else if ((src1 == WB_dest) && (WB_WB_en == 1'b1))
             sel_src1 = `FORWARDING_SEL_WB;
-        else if ((src2 == MEM_dest) && (MEM_WB_en == 1'b1))
+        if ((src2 == MEM_dest) && (MEM_WB_en == 1'b1))
             sel_src2 = `FORWARDING_SEL_MEM;
         else if ((src2 == WB_dest) && (WB_WB_en == 1'b1))
             sel_src2 = `FORWARDING_SEL_WB;
@@ -28,4 +28,3 @@ module Forwarding_Unit (
   end
 
 endmodule
-
