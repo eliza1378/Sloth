@@ -6,8 +6,6 @@ module EXE_Stage
   input                    rst,
   input  [`WORD_WIDTH-1:0] pc_in,
   input  [`WORD_WIDTH-1:0] instruction_in,
-  input  [1:0] sel_src1,
-  input  [1:0] sel_src2, 
   input  [`WORD_WIDTH-1:0] MEM_stage_val,
   input  [`WORD_WIDTH-1:0] WB_stage_val,
   input  [`SIGNED_IMM_WIDTH-1:0] signed_immediate,
@@ -17,6 +15,10 @@ module EXE_Stage
   input  [`REG_FILE_DEPTH-1:0] dst_in,
   input  mem_read_in, mem_write_in, imm, WB_en_in, B_in,
   input  [`WORD_WIDTH-1:0] val_Rn_in, val_Rm_in,
+
+  input  [1:0] sel_src1,
+  input  [1:0] sel_src2,
+
   output [`REG_FILE_DEPTH-1:0] dst_out,
   output [3:0] SR_out,
   output [`WORD_WIDTH-1:0] ALU_res,
@@ -40,13 +42,13 @@ module EXE_Stage
   wire [`WORD_WIDTH-1:0] alu_src2;
 
   MUX_4_to_1 #(.WORD_WIDTH(`WORD_WIDTH)) MUX_ALU_sel1 (
-		.in1(val_Rn_in), .in2(MEM_stage_val), .in3(WB_stage_val), .in4(val_Rn_in)
+		.in1(val_Rn_in), .in2(MEM_stage_val), .in3(WB_stage_val), .in4(val_Rn_in),
 		.sel(sel_src1),
 		.out(alu_src1)
 	);
 
   MUX_4_to_1 #(.WORD_WIDTH(`WORD_WIDTH)) MUX_ALU_sel2 (
-		.in1(val_Rm_in), .in2(MEM_stage_val), .in3(WB_stage_val), .in4(val_Rm_in)
+		.in1(val_Rm_in), .in2(MEM_stage_val), .in3(WB_stage_val), .in4(val_Rm_in),
 		.sel(sel_src2),
 		.out(alu_src2)
 	);

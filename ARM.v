@@ -139,21 +139,13 @@ module ARM
   wire EXE_stage_mem_read_out, EXE_stage_mem_write_out,
     EXE_stage_WB_en_out;
 
-
-  // input  [1:0] sel_src1,
-  // input  [1:0] sel_src2, 
-  // input  [`WORD_WIDTH-1:0] MEM_stage_val,
-  // input  [`WORD_WIDTH-1:0] WB_stage_val,
-
+  wire [1:0] EXE_sel_src1, EXE_sel_src2;
 
   EXE_Stage EXE_Stage_Inst(
     .clk(clk),
     .rst(rst),
     .pc_in(ID_reg_pc_out),
     .instruction_in(ID_reg_instruction_out),
-    .sel_src1()
-
-
     .signed_immediate(ID_reg_signed_immediate_out),
     .EX_command(ID_reg_EX_command_out),
     .SR_in(ID_reg_SR_out),
@@ -164,6 +156,10 @@ module ARM
     .WB_en_in(ID_reg_WB_en_out),
     .B_in(ID_reg_B_out),
     .val_Rn_in(ID_reg_val_Rn_out), .val_Rm_in(ID_reg_val_Rm_out),
+
+    .sel_src1(EXE_sel_src1),
+    .sel_src2(EXE_sel_src2),
+
     .dst_out(EXE_stage_reg_file_dst_out),
     .SR_out(EXE_stage_SR_out),
     .ALU_res(ALU_res),
@@ -284,19 +280,16 @@ module ARM
     .hazard_detected(hazard_detected)
   );
 
-
-
   Forwarding_Unit Forwarding_Unit_Inst(
     .enable(enableForwarding),
-    input  [`REG_FILE_DEPTH-1:0] src1,
-    input  [`REG_FILE_DEPTH-1:0] src2,
-    input  [`REG_FILE_DEPTH-1:0] MEM_dest,
-    input  [`REG_FILE_DEPTH-1:0] WB_dest,
-    input        MEM_WB_en,
-    input        WB_WB_en,
-    output reg sel_src1, 
-    output reg sel_src2
-);
+    .src1(ID_reg_val_Rn_out),
+    .src2(ID_reg_val_Rn_out),
+    .MEM_dest(MEM_dest),
+    .WB_dest(EXE_dest),
+    .MEM_WB_en(MEM_WB_en),
+    .WB_WB_en(EXE_WB_en),
+    .sel_src1(EXE_sel_src1),
+    .sel_src2(EXE_sel_src2)
+  );
 
 endmodule
-

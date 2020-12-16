@@ -1,11 +1,11 @@
 `include "settings.h"
 
-module MUX_2_to_1
+module MUX_4_to_1
 (
   sel,
   in1,
   in2,
-  in3, 
+  in3,
   in4,
   out
 );
