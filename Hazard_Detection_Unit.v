@@ -17,18 +17,18 @@ module Hazard_Detection_Unit (
 always @(*) begin
 	hazard_detected = 1'b0;
     if(~enableForwarding) begin
-		if ((src1 == EXE_dest) && (EXE_WB_en == 1'b1) && (has_src1 == 1'b1)) begin
-			hazard_detected = 1'b1;
-		end
-		else if ((src1 == MEM_dest) && (MEM_WB_en == 1'b1) && (has_src1 == 1'b1)) begin
-			hazard_detected = 1'b1;
-		end
-		else if ((src2 == EXE_dest) && (EXE_WB_en == 1'b1) && (has_src2 == 1'b1)) begin
-			hazard_detected = 1'b1;
-		end
-		else if ((src2 == MEM_dest) && (MEM_WB_en == 1'b1) && (has_src2 == 1'b1)) begin
-			hazard_detected = 1'b1;
-		end  
+			if ((src1 == EXE_dest) && (EXE_WB_en == 1'b1) && (has_src1 == 1'b1)) begin
+				hazard_detected = 1'b1;
+			end
+			else if ((src1 == MEM_dest) && (MEM_WB_en == 1'b1) && (has_src1 == 1'b1)) begin
+				hazard_detected = 1'b1;
+			end
+			else if ((src2 == EXE_dest) && (EXE_WB_en == 1'b1) && (has_src2 == 1'b1)) begin
+				hazard_detected = 1'b1;
+			end
+			else if ((src2 == MEM_dest) && (MEM_WB_en == 1'b1) && (has_src2 == 1'b1)) begin
+				hazard_detected = 1'b1;
+			end
     end
 	else begin
 		if(EXE_memread_en) begin
@@ -43,4 +43,3 @@ always @(*) begin
 end
 
 endmodule
-

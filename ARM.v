@@ -97,6 +97,7 @@ module ARM
     ID_reg_Imm_out,
     ID_reg_B_out,
     ID_reg_SR_update_out;
+  wire [`REG_FILE_DEPTH-1:0] ID_reg_reg_file_src1, ID_reg_reg_file_src2;
 
   ID_Reg ID_Reg_Inst(
     .clk(clk),
@@ -114,6 +115,8 @@ module ARM
 		.Imm_in(ID_stage_Imm_out),
 		.B_in(ID_stage_B_out),
 		.SR_update_in(ID_stage_SR_update_out),
+    .reg_file_src1_in(ID_stage_reg_file_src1),
+    .reg_file_src2_in(ID_stage_reg_file_src2),
     .pc(ID_reg_pc_out),
     .instruction(ID_reg_instruction_out),
     .reg_file_dst_out(ID_reg_reg_file_dst_out),
@@ -127,7 +130,9 @@ module ARM
 		.B_out(ID_reg_B_out),
     .SR_update_out(ID_reg_SR_update_out),
     .status_register_in(status),
-    .status_register_out(ID_reg_SR_out)
+    .status_register_out(ID_reg_SR_out),
+    .reg_file_src1_out(ID_reg_reg_file_src1),
+    .reg_file_src2_out(ID_reg_reg_file_src2)
   );
 
   wire [`WORD_WIDTH-1:0] EXE_stage_pc_out;
@@ -282,8 +287,8 @@ module ARM
 
   Forwarding_Unit Forwarding_Unit_Inst(
     .enable(enableForwarding),
-    .src1(ID_reg_val_Rn_out),
-    .src2(ID_reg_val_Rn_out),
+    .src1(ID_reg_reg_file_src1),
+    .src2(ID_reg_reg_file_src2),
     .MEM_dest(MEM_dest),
     .WB_dest(EXE_dest),
     .MEM_WB_en(MEM_WB_en),
