@@ -145,12 +145,15 @@ module ARM
     EXE_stage_WB_en_out;
 
   wire [1:0] EXE_sel_src1, EXE_sel_src2;
+  wire [`WORD_WIDTH-1:0] Mem_Stage_ALU_res_out;
 
   EXE_Stage EXE_Stage_Inst(
     .clk(clk),
     .rst(rst),
     .pc_in(ID_reg_pc_out),
     .instruction_in(ID_reg_instruction_out),
+    .MEM_stage_val(Mem_Stage_ALU_res_out),
+    .WB_stage_val(WB_Value),
     .signed_immediate(ID_reg_signed_immediate_out),
     .EX_command(ID_reg_EX_command_out),
     .SR_in(ID_reg_SR_out),
@@ -204,7 +207,6 @@ module ARM
   );
 
   wire [`REG_FILE_DEPTH-1:0] Mem_Stage_dst_out;
-  wire [`WORD_WIDTH-1:0] Mem_Stage_ALU_res_out;
   wire [`WORD_WIDTH-1:0] Mem_Stage_mem_out;
   wire Mem_Stage_read_out, Mem_Stage_WB_en_out;
 
@@ -290,9 +292,9 @@ module ARM
     .src1(ID_reg_reg_file_src1),
     .src2(ID_reg_reg_file_src2),
     .MEM_dest(MEM_dest),
-    .WB_dest(EXE_dest),
+    .WB_dest(WB_Stage_dst_out),
     .MEM_WB_en(MEM_WB_en),
-    .WB_WB_en(EXE_WB_en),
+    .WB_WB_en(WB_Stage_WB_en_out),
     .sel_src1(EXE_sel_src1),
     .sel_src2(EXE_sel_src2)
   );

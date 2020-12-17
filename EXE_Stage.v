@@ -78,6 +78,6 @@ module EXE_Stage
 	assign mem_write_out = mem_write_in;
   assign WB_en_out = WB_en_in;
   assign B_out = B_in;
-  assign val_Rm_out = val_Rm_in;
+  assign val_Rm_out = alu_src2;
 
 endmodule
