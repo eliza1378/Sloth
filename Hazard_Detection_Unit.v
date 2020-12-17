@@ -8,7 +8,7 @@ module Hazard_Detection_Unit (
     input  [`REG_FILE_DEPTH-1:0] MEM_dest,
     input        EXE_WB_en,
     input        MEM_WB_en,
-	input 		 EXE_memread_en,
+		input 		 EXE_memread_en,
     input        has_src1,
     input        has_src2,
     output reg   hazard_detected
